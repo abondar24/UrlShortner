@@ -1,4 +1,4 @@
-package org.abondar.experimental.plugins
+package org.abondar.experimental.config
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*

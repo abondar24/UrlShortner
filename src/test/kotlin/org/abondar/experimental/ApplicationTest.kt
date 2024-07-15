@@ -5,7 +5,6 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlin.test.*
-import org.abondar.experimental.plugins.*
 
 class ApplicationTest {
     @Test
