@@ -4,3 +4,9 @@ ktor:
       - org.abondar.experimental.ApplicationKt.module
   deployment:
     port: 8080
+
+  datasource:
+    driver: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://localhost:3306/urlDb"
+    username: "url"
+    password: "urlPass"

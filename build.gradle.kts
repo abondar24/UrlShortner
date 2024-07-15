@@ -1,5 +1,11 @@
 val kotlin_version: String by project
 val logback_version: String by project
+val swagger_version: String by project
+val flyway_version: String by project
+val mysql_version: String by project
+val caffeine_version: String by project
+val koin_version: String by project
+val exposed_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -22,13 +28,29 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.github.smiley4:ktor-swagger-ui:2.9.0")
+    implementation("io.github.smiley4:ktor-swagger-ui:$swagger_version")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-jackson-jvm")
+    implementation("io.ktor:ktor-server-status-pages")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-config-yaml")
+    implementation("io.insert-koin:koin-ktor:$koin_version")
+    implementation("io.insert-koin:koin-core:$koin_version")
+    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+
+    implementation("org.flywaydb:flyway-core:$flyway_version")
+    implementation("org.flywaydb:flyway-mysql:$flyway_version")
+    implementation("com.mysql:mysql-connector-j:$mysql_version")
+    implementation("com.github.ben-manes.caffeine:caffeine:$caffeine_version")
+
+    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+
+
+
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
