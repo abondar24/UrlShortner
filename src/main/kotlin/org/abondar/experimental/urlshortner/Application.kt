@@ -12,7 +12,7 @@ fun Application.module() {
     configureMonitoring()
     configureSerialization()
     configureRouting()
-    configureDataSource()
+    flywayConfig()
     configureKoin()
 
 }
