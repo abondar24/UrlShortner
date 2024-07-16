@@ -1,4 +1,4 @@
-package org.abondar.experimental.config
+package org.abondar.experimental.urlshortner
 
 import io.ktor.server.application.*
 import org.flywaydb.core.Flyway

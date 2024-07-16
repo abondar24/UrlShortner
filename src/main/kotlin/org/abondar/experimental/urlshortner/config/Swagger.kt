@@ -1,4 +1,4 @@
-package org.abondar.experimental.config
+package org.abondar.experimental.urlshortner.config
 
 import io.github.smiley4.ktorswaggerui.SwaggerUI
 import io.ktor.server.application.*

@@ -12,7 +12,7 @@ plugins {
     id("io.ktor.plugin") version "2.3.12"
 }
 
-group = "org.abondar.experimental"
+group = "org.abondar.experimental.urlshortner"
 version = "0.0.1"
 
 application {

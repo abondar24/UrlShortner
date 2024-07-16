@@ -1,7 +1,7 @@
-package org.abondar.experimental
+package org.abondar.experimental.urlshortner
 
 import io.ktor.server.application.*
-import org.abondar.experimental.config.*
+import org.abondar.experimental.urlshortner.config.*
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
@@ -14,6 +14,6 @@ fun Application.module() {
     configureRouting()
     configureDataSource()
     configureKoin()
-    configureD
+
 }
 

@@ -1,4 +1,4 @@
-package org.abondar.experimental.config
+package org.abondar.experimental.urlshortner.config
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*

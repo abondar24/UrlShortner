@@ -1,4 +1,4 @@
-package org.abondar.experimental.config
+package org.abondar.experimental.urlshortner.config
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.http.*

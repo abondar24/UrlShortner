@@ -1,4 +1,4 @@
-package org.abondar.experimental.config
+package org.abondar.experimental.urlshortner.config
 
 import com.fasterxml.jackson.databind.*
 import io.ktor.serialization.jackson.*
