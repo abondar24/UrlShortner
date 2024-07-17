@@ -36,9 +36,10 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-config-yaml")
-    implementation("io.insert-koin:koin-ktor:$koin_version")
-    implementation("io.insert-koin:koin-core:$koin_version")
-    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:7.22.0")
+
+
 
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-mysql:$flyway_version")
@@ -48,9 +49,10 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
 
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("io.mockk:mockk:1.13.12")
 }

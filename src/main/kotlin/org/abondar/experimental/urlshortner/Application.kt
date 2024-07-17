@@ -13,7 +13,6 @@ fun Application.module() {
     configureSerialization()
     configureRouting()
     flywayConfig()
-    configureKoin()
-
+    configureDI()
 }
 

@@ -10,15 +10,13 @@ import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.koin.core.component.KoinComponent
 import java.time.LocalDateTime
 
-class UrlMappingDAO(private val db: Database, private val cache: Cache<String, String>) : KoinComponent {
+class UrlMappingDAO(private val db: Database, private val cache: Cache<String, String>) {
 
-    fun save(longUrl: String, shortUrl: String): String {
+    fun save(longUrl: String, shortUrl: String) {
 
-
-        transaction {
+        transaction(db) {
             addLogger(StdOutSqlLogger)
 
             UrlMapping.insert {
@@ -30,7 +28,6 @@ class UrlMappingDAO(private val db: Database, private val cache: Cache<String, S
 
         cache.put(shortUrl, longUrl)
 
-        return shortUrl
     }
 
     fun findLongUrl(shortUrl: String): String {
@@ -45,7 +42,7 @@ class UrlMappingDAO(private val db: Database, private val cache: Cache<String, S
                 .firstOrNull()?.let {
                     val longUrl = it[UrlMapping.longUrl]
                     longUrl
-                } ?: throw UrlRequestException("Long url does not exist")
+                } ?: throw UrlRequestException("URL for redirect not found")
 
         }
 
