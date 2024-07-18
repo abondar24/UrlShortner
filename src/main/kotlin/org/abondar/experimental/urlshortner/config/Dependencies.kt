@@ -7,9 +7,7 @@ import org.abondar.experimental.urlshortner.service.UrlShortenerService
 import org.jetbrains.exposed.sql.Database
 import org.kodein.di.bind
 import org.kodein.di.instance
-import org.kodein.di.ktor.CallScope
 import org.kodein.di.ktor.di
-import org.kodein.di.scoped
 import org.kodein.di.singleton
 import java.util.concurrent.TimeUnit
 
