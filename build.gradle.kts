@@ -52,10 +52,25 @@ dependencies {
 
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.mockk:mockk:1.13.12")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testImplementation("org.testcontainers:testcontainers:1.19.8")
     testImplementation("org.testcontainers:junit-jupiter:1.19.8")
     testImplementation("org.testcontainers:mysql:1.19.8")
+
+}
+
+
+tasks.register<Test>("integrationTest") {
+    useJUnitPlatform {
+        include("**/ApplicationTest.class")
+    }
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform {
+        exclude("**/ApplicationTest.class")
+    }
 
 }

@@ -6,12 +6,13 @@ import org.abondar.experimental.urlshortner.dao.UrlMappingDAO
 import org.abondar.experimental.urlshortner.exception.UrlNotFoundException
 import org.abondar.experimental.urlshortner.exception.UrlRequestException
 import org.jetbrains.exposed.sql.Database
-import org.junit.Assert.*
+
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.kodein.di.*
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertNotNull
+
 
 
 class UrlShortenerServiceTest {
@@ -23,7 +24,7 @@ class UrlShortenerServiceTest {
     private lateinit var urlShortenerService: UrlShortenerService
 
 
-    @BeforeTest
+    @BeforeEach
     fun setup() {
         database = mockk(relaxed = true)
         cache = mockk(relaxed = true)
@@ -40,7 +41,7 @@ class UrlShortenerServiceTest {
     }
 
 
-    @AfterTest
+    @AfterEach
     fun tearDown() {
         clearMocks(database, cache, urlMappingDAO)
     }

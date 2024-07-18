@@ -5,4 +5,3 @@
 - add extra profile for docker
 - add jib config
 - add docker-compose
-- move itest to a separate gradle task

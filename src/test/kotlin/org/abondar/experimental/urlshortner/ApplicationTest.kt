@@ -12,13 +12,18 @@ import io.ktor.server.testing.*
 import org.abondar.experimental.urlshortner.config.*
 import org.abondar.experimental.urlshortner.model.ShortenRequest
 import org.abondar.experimental.urlshortner.model.ShortenResponse
+
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import kotlin.test.*
 
 @Testcontainers
-class ApplicationITest {
+class ApplicationTest {
     companion object {
 
         @Container
@@ -32,12 +37,12 @@ class ApplicationITest {
 
     private val objectMapper = jacksonObjectMapper()
 
-    @BeforeTest
+    @BeforeEach
     fun setup() {
         container.start()
     }
 
-    @AfterTest
+    @AfterEach
     fun tearDown() {
         container.stop()
     }
