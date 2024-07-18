@@ -4,8 +4,11 @@ val swagger_version: String by project
 val flyway_version: String by project
 val mysql_version: String by project
 val caffeine_version: String by project
-val koin_version: String by project
+val kodein_version: String by project
 val exposed_version: String by project
+val junit_version: String by project
+val mockk_version: String by project
+val testcontainers_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -38,7 +41,7 @@ dependencies {
 
     implementation("io.github.smiley4:ktor-swagger-ui:$swagger_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:7.22.0")
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version")
 
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-mysql:$flyway_version")
@@ -52,25 +55,29 @@ dependencies {
 
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
-    testImplementation("io.mockk:mockk:1.13.12")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-    testImplementation("org.testcontainers:testcontainers:1.19.8")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-    testImplementation("org.testcontainers:mysql:1.19.8")
+    testImplementation("io.mockk:mockk:$mockk_version")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+
+    testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainers_version")
+    testImplementation("org.testcontainers:mysql:$testcontainers_version")
 
 }
 
 
-tasks.register<Test>("integrationTest") {
-    useJUnitPlatform {
-        include("**/ApplicationTest.class")
-    }
-}
-
-tasks.named<Test>("test") {
-    useJUnitPlatform {
-        exclude("**/ApplicationTest.class")
+tasks{
+    register<Test>("integrationTest") {
+        useJUnitPlatform {
+            include("**/ApplicationTest.class")
+        }
     }
 
+    named<Test>("test") {
+        useJUnitPlatform {
+            exclude("**/ApplicationTest.class")
+        }
+
+    }
 }
