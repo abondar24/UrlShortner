@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 
 fun Application.configureDI() {
     di {
-        bind<UrlMappingDAO>() with scoped(CallScope).singleton {
+        bind<UrlMappingDAO>() with singleton {
             val db = Database.connect(
                 url = environment.config.property("ktor.datasource.url").getString(),
                 driver = environment.config.property("ktor.datasource.driver").getString(),
@@ -32,7 +32,7 @@ fun Application.configureDI() {
         }
 
 
-        bind<UrlShortenerService>() with scoped(CallScope).singleton {
+        bind<UrlShortenerService>() with singleton {
             UrlShortenerService(instance())
         }
 
