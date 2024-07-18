@@ -6,8 +6,6 @@ import org.abondar.experimental.urlshortner.model.UrlMapping
 import org.abondar.experimental.urlshortner.model.UrlMapping.longUrl
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime

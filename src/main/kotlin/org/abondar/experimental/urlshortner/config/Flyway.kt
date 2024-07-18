@@ -3,7 +3,7 @@ package org.abondar.experimental.urlshortner.config
 import io.ktor.server.application.*
 import org.flywaydb.core.Flyway
 
-fun Application.configuireFlyway() {
+fun Application.configureFlyway() {
 
     val flyway = Flyway.configure().dataSource(
         environment.config.property("ktor.datasource.url").getString(),
