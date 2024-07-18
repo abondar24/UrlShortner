@@ -28,19 +28,17 @@ repositories {
 
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.github.smiley4:ktor-swagger-ui:$swagger_version")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("io.ktor:ktor-client-content-negotiation")
+    implementation("io.ktor:ktor-client-content-negotiation-jvm")
     implementation("io.ktor:ktor-serialization-jackson-jvm")
-    implementation("io.ktor:ktor-server-status-pages")
+    implementation("io.ktor:ktor-server-status-pages-jvm")
+    implementation("io.ktor:ktor-server-config-yaml-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+
+    implementation("io.github.smiley4:ktor-swagger-ui:$swagger_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("io.ktor:ktor-server-config-yaml")
-
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:7.22.0")
-
-
 
     implementation("org.flywaydb:flyway-core:$flyway_version")
     implementation("org.flywaydb:flyway-mysql:$flyway_version")

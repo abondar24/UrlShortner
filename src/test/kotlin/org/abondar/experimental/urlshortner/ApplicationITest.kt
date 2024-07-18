@@ -12,7 +12,7 @@ import io.ktor.server.testing.*
 import org.abondar.experimental.urlshortner.config.configureDI
 import org.abondar.experimental.urlshortner.config.configureRouting
 import org.abondar.experimental.urlshortner.config.configureSerialization
-import org.abondar.experimental.urlshortner.config.flywayConfig
+import org.abondar.experimental.urlshortner.config.configuireFlyway
 import org.abondar.experimental.urlshortner.model.ShortenRequest
 import org.abondar.experimental.urlshortner.model.ShortenResponse
 import org.testcontainers.containers.MySQLContainer
@@ -51,7 +51,7 @@ class ApplicationITest {
             configureRouting()
             configureSerialization()
             configureDI()
-            flywayConfig()
+            configuireFlyway()
         }
 
         environment {

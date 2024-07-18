@@ -1,7 +1,7 @@
 package org.abondar.experimental.urlshortner.dao
 
 import com.github.benmanes.caffeine.cache.Cache
-import org.abondar.experimental.urlshortner.exception.UrlRequestException
+import org.abondar.experimental.urlshortner.exception.UrlNotFoundException
 import org.abondar.experimental.urlshortner.model.UrlMapping
 import org.abondar.experimental.urlshortner.model.UrlMapping.longUrl
 import org.jetbrains.exposed.sql.Database
@@ -17,8 +17,6 @@ class UrlMappingDAO(private val db: Database, private val cache: Cache<String, S
     fun save(longUrl: String, shortUrl: String) {
 
         transaction(db) {
-            addLogger(StdOutSqlLogger)
-
             UrlMapping.insert {
                 it[UrlMapping.longUrl] = longUrl
                 it[UrlMapping.shortUrl] = shortUrl
@@ -36,13 +34,12 @@ class UrlMappingDAO(private val db: Database, private val cache: Cache<String, S
         }
 
      return transaction(db) {
-            addLogger(StdOutSqlLogger)
             UrlMapping.select(longUrl)
                 .where(UrlMapping.shortUrl.eq(shortUrl))
                 .firstOrNull()?.let {
                     val longUrl = it[UrlMapping.longUrl]
                     longUrl
-                } ?: throw UrlRequestException("URL for redirect not found")
+                } ?: throw UrlNotFoundException("URL for redirect not found")
 
         }
 
