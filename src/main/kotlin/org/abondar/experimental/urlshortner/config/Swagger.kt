@@ -10,9 +10,9 @@ fun Application.configureSwagger() {
             forwardRoot = true
         }
         info {
-            title = "Example API"
+            title = "URL shortener API"
             version = "latest"
-            description = "Example API for testing and demonstration purposes."
+            description = "API for creating short urls and redirecting via them to original ones"
         }
         server {
             url = "http://localhost:8080"
