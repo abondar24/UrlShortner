@@ -13,10 +13,11 @@ val testcontainers_version: String by project
 plugins {
     kotlin("jvm") version "2.0.0"
     id("io.ktor.plugin") version "2.3.12"
+    id("com.google.cloud.tools.jib") version "3.1.1"
 }
 
 group = "org.abondar.experimental.urlshortner"
-version = "0.0.1"
+version = "1.0"
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
@@ -80,4 +81,46 @@ tasks{
         }
 
     }
+}
+var registry = System.getenv("DOCKER_REGISTRY")
+
+jib {
+
+    from {
+        image = "eclipse-temurin:17-jre"
+        platforms {
+//            platform {
+//                architecture = "amd64"
+//                os = "linux"
+//            }
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+        }
+
+    }
+
+    to {
+        image = "$registry/urlshortner:$version"
+        auth {
+            username = System.getenv("DOCKER_USERNAME")
+            password = System.getenv("DOCKER_PWD")
+        }
+    }
+
+    container {
+        mainClass = mainClass
+        ports = listOf("8080")
+        args = listOf("-config=application-docker.yaml")
+    }
+
+    extraDirectories{
+        paths {
+            path {
+                setFrom("src/main/resources/docker")
+            }
+        }
+    }
+
 }
