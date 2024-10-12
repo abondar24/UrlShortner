@@ -2,26 +2,14 @@ package org.abondar.experimental.urlshortner.dao
 
 import com.github.benmanes.caffeine.cache.Cache
 import org.abondar.experimental.urlshortner.exception.UrlNotFoundException
-import org.abondar.experimental.urlshortner.model.UrlMapping
-import org.abondar.experimental.urlshortner.model.UrlMapping.longUrl
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.transactions.transaction
-import java.time.LocalDateTime
 
-class UrlMappingDAO(private val db: Database, private val cache: Cache<String, String>) {
+import redis.clients.jedis.Jedis
+
+class UrlMappingDAO(private val redisClient: Jedis, private val cache: Cache<String, String>) {
 
     fun save(longUrl: String, shortUrl: String) {
 
-        transaction(db) {
-            UrlMapping.insert {
-                it[UrlMapping.longUrl] = longUrl
-                it[UrlMapping.shortUrl] = shortUrl
-                it[createdAt] = LocalDateTime.now()
-            }
-        }
-
+        redisClient.set(shortUrl,longUrl)
         cache.put(shortUrl, longUrl)
 
     }
@@ -31,15 +19,9 @@ class UrlMappingDAO(private val db: Database, private val cache: Cache<String, S
             return it
         }
 
-     return transaction(db) {
-            UrlMapping.select(longUrl)
-                .where(UrlMapping.shortUrl.eq(shortUrl))
-                .firstOrNull()?.let {
-                    val longUrl = it[UrlMapping.longUrl]
-                    longUrl
-                } ?: throw UrlNotFoundException("URL for redirect not found")
+        var longUrl = redisClient.get(shortUrl)
 
-        }
+     return longUrl ?: throw UrlNotFoundException("URL for redirect not found")
 
     }
 

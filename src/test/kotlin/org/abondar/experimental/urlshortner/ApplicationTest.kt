@@ -2,6 +2,7 @@ package org.abondar.experimental.urlshortner
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.redis.testcontainers.RedisContainer
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -18,21 +19,16 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+
 
 @Testcontainers
 class ApplicationTest {
     companion object {
 
         @Container
-        val container = MySQLContainer<Nothing>("mysql:8.4.0").apply {
-            withDatabaseName("urlDb")
-            withUsername("url")
-            withPassword("urlPass")
-            withExposedPorts(3306)
-        }
+        val container = RedisContainer("redis:6.2.6")
     }
 
     private val objectMapper = jacksonObjectMapper()
@@ -53,15 +49,13 @@ class ApplicationTest {
             configureRouting()
             configureSerialization()
             configureDI()
-            configureFlyway()
         }
 
         environment {
             config = MapApplicationConfig(
-                "ktor.datasource.url" to container.jdbcUrl,
-                "ktor.datasource.username" to container.username,
-                "ktor.datasource.password" to container.password,
-                "ktor.datasource.driver" to "com.mysql.cj.jdbc.Driver",
+                "ktor.redis.url" to container.redisURI,
+                "ktor.redis.db" to "0",
+                "ktor.redis.password" to "",
             )
         }
 
@@ -98,16 +92,14 @@ class ApplicationTest {
             configureRouting()
             configureSerialization()
             configureDI()
-            configureFlyway()
             configureStatusPages()
         }
 
         environment {
             config = MapApplicationConfig(
-                "ktor.datasource.url" to container.jdbcUrl,
-                "ktor.datasource.username" to container.username,
-                "ktor.datasource.password" to container.password,
-                "ktor.datasource.driver" to "com.mysql.cj.jdbc.Driver",
+                "ktor.redis.url" to container.redisURI,
+                "ktor.redis.db" to "0",
+                "ktor.redis.password" to "",
             )
         }
 
@@ -143,19 +135,16 @@ class ApplicationTest {
             configureRouting()
             configureSerialization()
             configureDI()
-            configureFlyway()
             configureStatusPages()
         }
 
         environment {
             config = MapApplicationConfig(
-                "ktor.datasource.url" to container.jdbcUrl,
-                "ktor.datasource.username" to container.username,
-                "ktor.datasource.password" to container.password,
-                "ktor.datasource.driver" to "com.mysql.cj.jdbc.Driver",
+                "ktor.redis.url" to container.redisURI,
+                "ktor.redis.db" to "0",
+                "ktor.redis.password" to "",
             )
         }
-
 
         client.get("/test")
             .apply {

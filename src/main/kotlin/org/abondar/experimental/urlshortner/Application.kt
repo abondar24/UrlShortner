@@ -12,8 +12,8 @@ fun Application.module() {
     configureMonitoring()
     configureSerialization()
     configureRouting()
-    configureFlyway()
     configureDI()
     configureStatusPages()
+    configureCors()
 }
 

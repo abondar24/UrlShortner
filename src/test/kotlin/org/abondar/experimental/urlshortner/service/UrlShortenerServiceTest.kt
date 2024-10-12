@@ -1,23 +1,24 @@
 package org.abondar.experimental.urlshortner.service
 
 import com.github.benmanes.caffeine.cache.Cache
-import io.mockk.*
+import io.mockk.clearMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.abondar.experimental.urlshortner.dao.UrlMappingDAO
 import org.abondar.experimental.urlshortner.exception.UrlNotFoundException
 import org.abondar.experimental.urlshortner.exception.UrlRequestException
-import org.jetbrains.exposed.sql.Database
-
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.kodein.di.*
-
+import redis.clients.jedis.Jedis
 
 
 class UrlShortenerServiceTest {
 
-    private lateinit var database: Database
+    private lateinit var redisClient: Jedis
     private lateinit var cache: Cache<String, String>
     private lateinit var urlMappingDAO: UrlMappingDAO
     private lateinit var kodein: DI
@@ -26,16 +27,17 @@ class UrlShortenerServiceTest {
 
     @BeforeEach
     fun setup() {
-        database = mockk(relaxed = true)
+        redisClient = mockk(relaxed = true)
         cache = mockk(relaxed = true)
         urlMappingDAO = mockk(relaxed = true)
 
         kodein = DI {
-            bind<Database>() with singleton { database }
+            bind<Jedis>() with singleton { redisClient }
             bind<Cache<String, String>>() with singleton { cache }
             bind<UrlMappingDAO>() with singleton { urlMappingDAO }
             bind<UrlShortenerService>() with singleton { UrlShortenerService(instance()) }
         }
+
 
         urlShortenerService = kodein.direct.instance()
     }
@@ -43,7 +45,7 @@ class UrlShortenerServiceTest {
 
     @AfterEach
     fun tearDown() {
-        clearMocks(database, cache, urlMappingDAO)
+        clearMocks(redisClient, cache, urlMappingDAO)
     }
 
     @Test

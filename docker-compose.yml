@@ -1,16 +1,9 @@
 version: '3.8'
 
 services:
-  db:
-    image: mysql:8.4.0
-    container_name: urlshortener-db
-    environment:
-      MYSQL_ROOT_PASSWORD: root4mysql
-      MYSQL_DATABASE: urlDb
-      MYSQL_USER: url
-      MYSQL_PASSWORD: urlPass
-    volumes:
-      - db_data:/var/lib/mysql
+  redis:
+    image: redis:6.2.6
+    container_name: urlshortener-redis
     networks:
       - urlshortener-net
 
@@ -19,18 +12,15 @@ services:
     container_name: urlshortener
     restart: on-failure
     environment:
-      DB_USER: url
-      DB_PASS: urlPass
-      DB_URL: jdbc:mysql://db:3306/urlDb
+      REDIS_URL: redis://redis:6379
+      REDIS_DB: 0
+      REDIS_PASS: ""
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - redis
     networks:
       - urlshortener-net
-
-volumes:
-  db_data:
 
 networks:
   urlshortener-net:

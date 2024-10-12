@@ -1,11 +1,9 @@
 val kotlin_version: String by project
 val logback_version: String by project
 val swagger_version: String by project
-val flyway_version: String by project
-val mysql_version: String by project
+val jedis_version: String by project
 val caffeine_version: String by project
 val kodein_version: String by project
-val exposed_version: String by project
 val junit_version: String by project
 val mockk_version: String by project
 val testcontainers_version: String by project
@@ -13,7 +11,7 @@ val testcontainers_version: String by project
 plugins {
     kotlin("jvm") version "2.0.0"
     id("io.ktor.plugin") version "2.3.12"
-    id("com.google.cloud.tools.jib") version "3.1.1"
+    id("com.google.cloud.tools.jib") version "3.4.3"
 }
 
 group = "org.abondar.experimental.urlshortner"
@@ -39,20 +37,14 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages-jvm")
     implementation("io.ktor:ktor-server-config-yaml-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
+    implementation("io.ktor:ktor-server-cors")
 
     implementation("io.github.smiley4:ktor-swagger-ui:$swagger_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:$kodein_version")
 
-    implementation("org.flywaydb:flyway-core:$flyway_version")
-    implementation("org.flywaydb:flyway-mysql:$flyway_version")
-    implementation("com.mysql:mysql-connector-j:$mysql_version")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeine_version")
-
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
+    implementation("redis.clients:jedis:$jedis_version")
 
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
@@ -63,12 +55,12 @@ dependencies {
 
     testImplementation("org.testcontainers:testcontainers:$testcontainers_version")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainers_version")
-    testImplementation("org.testcontainers:mysql:$testcontainers_version")
+    testImplementation("com.redis:testcontainers-redis:2.2.2")
 
 }
 
 
-tasks{
+tasks {
     register<Test>("integrationTest") {
         useJUnitPlatform {
             include("**/ApplicationTest.class")
@@ -87,7 +79,7 @@ var registry = System.getenv("DOCKER_REGISTRY")
 jib {
 
     from {
-        image = "eclipse-temurin:17-jre"
+        image = "eclipse-temurin:21-jre"
         platforms {
 //            platform {
 //                architecture = "amd64"
@@ -115,7 +107,7 @@ jib {
         args = listOf("-config=application-docker.yaml")
     }
 
-    extraDirectories{
+    extraDirectories {
         paths {
             path {
                 setFrom("src/main/resources/docker")
